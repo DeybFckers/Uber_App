@@ -153,8 +153,26 @@ class _SignUpState extends State<SignIn> {
                           ),
                           SizedBox(height: 20),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              final userCredential = await authGoogle.googleSignIn(context);
 
+                              final user = userCredential?.user;
+                              if(user != null){
+
+                                final userRef = firebaseStore
+                                    .collection('users')
+                                    .doc(user.uid);
+                                final doc = await userRef.get();
+
+                                if(!doc.exists){
+                                  await userRef.set({
+                                    'Name': user.displayName ?? '',
+                                    'Email': user.email??'',
+                                    'Photo': user.photoURL?? '',
+                                    'createdAt': DateTime.now()
+                                  });
+                                }
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
