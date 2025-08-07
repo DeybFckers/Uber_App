@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uber_app/Screen/AppScreen/Home.dart';
+import 'package:uber_app/widget/NavigationBottom.dart';
 
 class AuthService{
 
@@ -34,13 +36,20 @@ class AuthService{
       String defaultPhotoUrl = userCredential.user?.photoURL ??
           'https://ui-avatars.com/api/?name=${Uri.encodeComponent(fullName)}';
 
+      Get.offAll(() => NavigationBottom(
+        uid: userCredential.user!.uid,
+        name: fullName,
+        email: email,
+        photoUrl: defaultPhotoUrl,
+      ));
+
       Get.snackbar("Success", "Account successfully created");
 
     }catch (e){
       final err = e is FirebaseException ? e.message : e.toString();
       Get.snackbar("Error", err!,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.greenAccent,
         colorText: Colors.black,
       );
     }
@@ -67,21 +76,21 @@ class AuthService{
 
       Get.snackbar("Success", "Login Successfully");
 
-      // Get.offAll(() => Home(
-      //   uid:user.uid,
-      //   name: name,
-      //   email: Email,
-      //   photoUrl: photoUrl.isEmpty
-      //       ? 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(name)}' // default avatar
-      //       : photoUrl,
-      // ));
+      Get.offAll(() => NavigationBottom(
+        uid:user.uid,
+        name: name,
+        email: Email,
+        photoUrl: photoUrl.isEmpty
+            ? 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(name)}' // default avatar
+            : photoUrl,
+      ));
 
     }catch(e){
       final err = e is FirebaseException ? e.message : e.toString();
       Get.snackbar("Error", err!,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: Colors.greenAccent,
+        colorText: Colors.black,
       );
     }
   }

@@ -199,8 +199,8 @@ class _SignUpState extends State<SignUp> {
                               children: [
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds:300),
-                                  height: 8,
                                   width: 300 * _passwordStrength!.widthPerc,
+                                  height: 10,
                                   decoration: BoxDecoration(
                                     color: _passwordStrength!.statusColor,
                                     borderRadius: BorderRadius.circular(5),
